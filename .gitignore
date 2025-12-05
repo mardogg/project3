@@ -1,8 +1,57 @@
-venv/
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
 *.pyc
-.DS_Store
+venv/
+env/
+ENV/
+*.egg-info/
+
+# Testing
+.pytest_cache/
 .coverage
-.pytest_cache
-htmlcov
+htmlcov/
+coverage.xml
+
+# Environment Variables
 .env
+.env.local
+.env.prod
+.env.development
+.env.test
+*.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+postgres_data/
+pgadmin_data/
+
+# SSL Certificates
+certbot/
+*.pem
+*.key
+*.crt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
+
+# Backup files
+*.bak
+backup_*.sql
+
+# Keep example files
+!.env.prod.example
+!.env.example
