@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-calculator
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME || 'mardogg' }}/project3
   PYTHON_VERSION: '3.10'
 
 jobs:
