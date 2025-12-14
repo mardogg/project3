@@ -38,13 +38,13 @@ class UserCreate(UserBase):
         min_length=8,
         max_length=128,
         example="SecurePass123!",
-        description="User's password (8-128 characters)"
+        description="User's password (8-128 characters). Must contain: uppercase, lowercase, number, and special character"
     )
     confirm_password: str = Field(
         min_length=8,
         max_length=128,
         example="SecurePass123!",
-        description="Password confirmation"
+        description="Password confirmation - must match password field"
     )
 
     @model_validator(mode='after')
@@ -56,18 +56,39 @@ class UserCreate(UserBase):
 
     @model_validator(mode='after')
     def validate_password_strength(self) -> "UserCreate":
-        """Validate password strength requirements"""
+        """
+        Validate password strength requirements.
+        
+        Requirements:
+        - At least 8 characters long
+        - At least one uppercase letter (A-Z)
+        - At least one lowercase letter (a-z)
+        - At least one digit (0-9)
+        - At least one special character (!@#$%^&*()_+-=[]{}|;:,.<>?)
+        """
         password = self.password
+        
+        # Check minimum length
         if len(password) < 8:
             raise ValueError("Password must be at least 8 characters long")
+        
+        # Check for uppercase letter
         if not any(char.isupper() for char in password):
-            raise ValueError("Password must contain at least one uppercase letter")
+            raise ValueError("Password must contain at least one uppercase letter (A-Z)")
+        
+        # Check for lowercase letter
         if not any(char.islower() for char in password):
-            raise ValueError("Password must contain at least one lowercase letter")
+            raise ValueError("Password must contain at least one lowercase letter (a-z)")
+        
+        # Check for digit
         if not any(char.isdigit() for char in password):
-            raise ValueError("Password must contain at least one digit")
-        if not any(char in "!@#$%^&*()_+-=[]{}|;:,.<>?" for char in password):
-            raise ValueError("Password must contain at least one special character")
+            raise ValueError("Password must contain at least one number (0-9)")
+        
+        # Check for special character
+        special_characters = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+        if not any(char in special_characters for char in password):
+            raise ValueError(f"Password must contain at least one special character ({special_characters})")
+        
         return self
 
     model_config = ConfigDict(
